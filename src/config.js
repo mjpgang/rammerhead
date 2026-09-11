@@ -42,7 +42,7 @@ module.exports = {
     },
 
     // セッション作成用パスワード
-    password: 'sharkie4life',
+    password: null,
 
     disableLocalStorageSync: false,
 
