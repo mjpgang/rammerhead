@@ -1,44 +1,19 @@
 /**
- * URL helper for request paths.
+ * for lazy people who don't want to type out
+ * `new URL('http://blah' + req.url).searchParams.get(ugh)`
+ * all the time
  */
 
 module.exports = class URLPath extends URL {
     /**
-     * @param {string} path
+     * @param {string} path - /site/path
      */
     constructor(path) {
-        let value = String(path || '/');
-
-        // Node/Vercel may pass an invalid proxy-style path.
-        // URL requires a valid absolute or relative URL.
-        if (!value.startsWith('/') && !value.startsWith('http://') && !value.startsWith('https://')) {
-            value = '/' + value;
-        }
-
-        // Some Rammerhead proxy paths contain a colon in the path.
-        // Encode only the problematic colon when it is not a scheme.
-        if (
-            value.startsWith('/') &&
-            value.includes(':') &&
-            !value.startsWith('/http://') &&
-            !value.startsWith('/https://')
-        ) {
-            const firstColon = value.indexOf(':');
-            const firstSlash = value.indexOf('/');
-
-            if (firstColon > firstSlash) {
-                value =
-                    value.slice(0, firstColon) +
-                    '%3A' +
-                    value.slice(firstColon + 1);
-            }
-        }
-
-        super(value, 'http://foobar');
+        super(path, 'http://foobar');
     }
 
     /**
-     * @param {string} param
+     * @param {string} param - ?param=value
      * @returns {string|null}
      */
     get(param) {
